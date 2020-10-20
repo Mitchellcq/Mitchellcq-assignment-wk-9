@@ -16,26 +16,94 @@ const validator = require("email-validator");
 
 var employees = [];
 
+inquirer.prompt([
+    {
+        type: 'list',
+        message: "Please select a role.",
+        choices: ['Manager', 'Engineer', 'Intern'],
+        name: 'role'
+    },
+]).then((answers) => {
+    if (answers.role == 'Manager') {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: "What is your Office Number?",
+                name: 'officeNum',
+                default: '1',
+                //validate if number
+                //need to validate if already selected this number
+                validate: function (answer) {
+                    if (isNaN(answer)) {
+                        return console.log("Please enter a valid ID number");
+                    }
+                    return true;
+                }
+            },
+        ])
+    } else if (answers.role == 'Engineer') {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: "What is your Github username?",
+                name: 'github',
+                default: 'Mitchellcq',
+                validate: function (answer) {
+                    if (answer.length < 1) {
+                        return console.log("Please enter a valid Username");
+                    }
+                    return true;
+                }
+            },
+        ])
+    } else {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: "What school do you attend?",
+                name: 'school',
+                default: 'USYD',
+                validate: function (answer) {
+                    if (answer.length < 1) {
+                        return console.log("Please enter a valid school");
+                    }
+                    return true;
+                }
+            },
+        ])
+    }
+}).then(
+    inquirer.prompt(questions)
+).then((answers) => {
+    if (answers.role == 'Manager') {
+        return new Manager;
+    } else if (answers.role == 'Engineer') {
+        return new Engineer;
+    } else {
+        return new Intern;
+    }
+});
+
 const questions = [
     {
         type: 'input',
-        message: "What is your GitHub username? (No @ needed)",
-        name: 'username',
-        default: 'Mitchellcq',
+        message: "What is your name?",
+        name: 'name',
+        default: 'Mitchell',
         validate: function (answer) {
             if (answer.length < 1) {
-                return console.log("A valid GitHub username is required.");
+                return console.log("Please enter a valid name");
             }
             return true;
         }
     },
     {
         type: 'input',
-        message: "What is the name of your GitHub repo?",
-        name: 'repo',
-        default: 'new-repo',
+        message: "What is your email address?",
+        name: 'email',
+        default: 'blank@nowhere.net',
         validate: function (answer) {
-            if (answer.length < 1) {
+            if (validator.validate(answer) !== true) {
                 return console.log("A valid GitHub repo is required for a badge.");
             }
             return true;
@@ -43,36 +111,19 @@ const questions = [
     },
     {
         type: 'input',
-        message: "What is the title of your project?",
-        name: 'title',
-        default: 'Project Title',
+        message: "Please select an ID number",
+        name: 'id',
+        default: '1',
         validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project title is required.");
+            //validate if number
+            //need to validate if already selected this number
+            if (isNaN(answer)) {
+                return console.log("Please enter a valid ID number");
             }
             return true;
         }
     },
-    {
-        type: 'input',
-        message: "Write a description of your project.",
-        name: 'description',
-        default: 'Project Description',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project description is required.");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'list',
-        message: "Choose a license for your project.",
-        choices: ['GNU AGPLv3', 'GNU GPLv3', 'GNU LGPLv3', 'Mozilla Public License 2.0', 'Apache License 2.0', 'MIT License', 'Boost Software License 1.0', 'The Unlicense'],
-        name: 'license'
-    }
 ];
-]
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
