@@ -15,6 +15,64 @@ const validator = require("email-validator");
 //validator.validate(a@a.com); ==true
 
 var employees = [];
+
+const questions = [
+    {
+        type: 'input',
+        message: "What is your GitHub username? (No @ needed)",
+        name: 'username',
+        default: 'Mitchellcq',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid GitHub username is required.");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'input',
+        message: "What is the name of your GitHub repo?",
+        name: 'repo',
+        default: 'new-repo',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid GitHub repo is required for a badge.");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'input',
+        message: "What is the title of your project?",
+        name: 'title',
+        default: 'Project Title',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid project title is required.");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'input',
+        message: "Write a description of your project.",
+        name: 'description',
+        default: 'Project Description',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid project description is required.");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'list',
+        message: "Choose a license for your project.",
+        choices: ['GNU AGPLv3', 'GNU GPLv3', 'GNU LGPLv3', 'Mozilla Public License 2.0', 'Apache License 2.0', 'MIT License', 'Boost Software License 1.0', 'The Unlicense'],
+        name: 'license'
+    }
+];
+]
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
