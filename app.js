@@ -112,11 +112,11 @@ inquirer.prompt([
     }
 }).then((answers) => {
     if (answers.role == 'Manager') {
-        return new Manager;
+        return new Manager(answers.name, answers.id, answers.email, answers.officeNum);
     } else if (answers.role == 'Engineer') {
-        return new Engineer;
+        return new Engineer(answers.name, answers.id, answers.email, answers.github);
     } else {
-        return new Intern;
+        return new Intern(answers.name, answers.id, answers.email, answers.school);
     }
 });
 
