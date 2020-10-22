@@ -16,107 +16,111 @@ const validator = require("email-validator");
 
 var employees = [];
 
-inquirer.prompt([
-    {
-        type: 'input',
-        message: "What is your name?",
-        name: 'name',
-        default: 'Mitchell',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("Please enter a valid name");
+function newEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: "What is your name?",
+            name: 'name',
+            default: 'Mitchell',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Please enter a valid name");
+                }
+                return true;
             }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "What is your email address?",
-        name: 'email',
-        default: 'blank@nowhere.net',
-        validate: function (answer) {
-            if (validator.validate(answer) !== true) {
-                return console.log("A valid GitHub repo is required for a badge.");
+        },
+        {
+            type: 'input',
+            message: "What is your email address?",
+            name: 'email',
+            default: 'blank@nowhere.net',
+            validate: function (answer) {
+                if (validator.validate(answer) !== true) {
+                    return console.log("A valid GitHub repo is required for a badge.");
+                }
+                return true;
             }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "Please select an ID number",
-        name: 'id',
-        default: '1',
-        validate: function (answer) {
+        },
+        {
+            type: 'input',
+            message: "Please select an ID number",
+            name: 'id',
+            default: '1',
+            validate: function (answer) {
+                //validate if number
+                //need to validate if already selected this number
+                if (isNaN(answer)) {
+                    return console.log("Please enter a valid ID number");
+                }
+                return true;
+            }
+        },
+        {
+            type: 'list',
+            message: "Please select a role.",
+            choices: ['Manager', 'Engineer', 'Intern'],
+            name: 'role'
+        },
+        {
+            when: input => {
+                return input.role == "Intern"
+            },
+            type: 'input',
+            message: "What school do you attend?",
+            name: 'school',
+            default: 'USYD',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Please enter a valid school");
+                }
+                return true;
+            }
+        },
+        {
+            when: input => {
+                return input.role == "Engineer"
+            },
+            type: 'input',
+            message: "What is your Github username?",
+            name: 'github',
+            default: 'Mitchellcq',
+            validate: function (answer) {
+                if (answer.length < 1) {
+                    return console.log("Please enter a valid Username");
+                }
+                return true;;
+            }
+        },
+        {
+            when: input => {
+                return input.role == "Manager"
+            },
+            type: 'input',
+            message: "What is your Office Number?",
+            name: 'officeNum',
+            default: '1',
             //validate if number
             //need to validate if already selected this number
-            if (isNaN(answer)) {
-                return console.log("Please enter a valid ID number");
+            validate: function (answer) {
+                if (isNaN(answer)) {
+                    return console.log("Please enter a valid ID number");
+                }
+                return true;
             }
-            return true;
-        }
-    },
-    {
-        type: 'list',
-        message: "Please select a role.",
-        choices: ['Manager', 'Engineer', 'Intern'],
-        name: 'role'
-    },
-    {
-        when: input => {
-            return input.role == "Intern"
         },
-        type: 'input',
-        message: "What school do you attend?",
-        name: 'school',
-        default: 'USYD',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("Please enter a valid school");
+    ]).then(
+        (answers) => {
+            if (answers.role == 'Manager') {
+                var newEmployee = new Manager(answers.name, answers.id, answers.email, answers.officeNum);
+            } else if (answers.role == 'Engineer') {
+                var newEmployee = new Engineer(answers.name, answers.id, answers.email, answers.github);
+            } else {
+                var newEmployee = new Intern(answers.name, answers.id, answers.email, answers.school);
             }
-            return true;
-        }
-    },
-    {
-        when: input => {
-            return input.role == "Engineer"
-        },
-        type: 'input',
-        message: "What is your Github username?",
-        name: 'github',
-        default: 'Mitchellcq',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("Please enter a valid Username");
-            }
-            return true;;
-        }
-    },
-    {
-        when: input => {
-            return input.role == "Manager"
-        },
-        type: 'input',
-        message: "What is your Office Number?",
-        name: 'officeNum',
-        default: '1',
-        //validate if number
-        //need to validate if already selected this number
-        validate: function (answer) {
-            if (isNaN(answer)) {
-                return console.log("Please enter a valid ID number");
-            }
-            return true;
-        }
-    },
-]).then((answers) => {
-    if (answers.role == 'Manager') {
-        return new Manager(answers.name, answers.id, answers.email, answers.officeNum);
-    } else if (answers.role == 'Engineer') {
-        return new Engineer(answers.name, answers.id, answers.email, answers.github);
-    } else {
-        return new Intern(answers.name, answers.id, answers.email, answers.school);
-    }
-});
+            employees.push(newEmployee);
+        });
+}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
