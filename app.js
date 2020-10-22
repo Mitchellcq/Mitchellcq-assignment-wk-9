@@ -61,56 +61,54 @@ inquirer.prompt([
         choices: ['Manager', 'Engineer', 'Intern'],
         name: 'role'
     },
+    {
+        when: input => {
+            return input.role == "Intern"
+        },
+        type: 'input',
+        message: "What school do you attend?",
+        name: 'school',
+        default: 'USYD',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("Please enter a valid school");
+            }
+            return true;
+        }
+    },
+    {
+        when: input => {
+            return input.role == "Engineer"
+        },
+        type: 'input',
+        message: "What is your Github username?",
+        name: 'github',
+        default: 'Mitchellcq',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("Please enter a valid Username");
+            }
+            return true;;
+        }
+    },
+    {
+        when: input => {
+            return input.role == "Manager"
+        },
+        type: 'input',
+        message: "What is your Office Number?",
+        name: 'officeNum',
+        default: '1',
+        //validate if number
+        //need to validate if already selected this number
+        validate: function (answer) {
+            if (isNaN(answer)) {
+                return console.log("Please enter a valid ID number");
+            }
+            return true;
+        }
+    },
 ]).then((answers) => {
-    if (answers.role == 'Manager') {
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: "What is your Office Number?",
-                name: 'officeNum',
-                default: '1',
-                //validate if number
-                //need to validate if already selected this number
-                validate: function (answer) {
-                    if (isNaN(answer)) {
-                        return console.log("Please enter a valid ID number");
-                    }
-                    return true;
-                }
-            },
-        ])
-    } else if (answers.role == 'Engineer') {
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: "What is your Github username?",
-                name: 'github',
-                default: 'Mitchellcq',
-                validate: function (answer) {
-                    if (answer.length < 1) {
-                        return console.log("Please enter a valid Username");
-                    }
-                    return true;
-                }
-            },
-        ])
-    } else {
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: "What school do you attend?",
-                name: 'school',
-                default: 'USYD',
-                validate: function (answer) {
-                    if (answer.length < 1) {
-                        return console.log("Please enter a valid school");
-                    }
-                    return true;
-                }
-            },
-        ])
-    }
-}).then((answers) => {
     if (answers.role == 'Manager') {
         return new Manager(answers.name, answers.id, answers.email, answers.officeNum);
     } else if (answers.role == 'Engineer') {
