@@ -18,6 +18,44 @@ var employees = [];
 
 inquirer.prompt([
     {
+        type: 'input',
+        message: "What is your name?",
+        name: 'name',
+        default: 'Mitchell',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("Please enter a valid name");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'input',
+        message: "What is your email address?",
+        name: 'email',
+        default: 'blank@nowhere.net',
+        validate: function (answer) {
+            if (validator.validate(answer) !== true) {
+                return console.log("A valid GitHub repo is required for a badge.");
+            }
+            return true;
+        }
+    },
+    {
+        type: 'input',
+        message: "Please select an ID number",
+        name: 'id',
+        default: '1',
+        validate: function (answer) {
+            //validate if number
+            //need to validate if already selected this number
+            if (isNaN(answer)) {
+                return console.log("Please enter a valid ID number");
+            }
+            return true;
+        }
+    },
+    {
         type: 'list',
         message: "Please select a role.",
         choices: ['Manager', 'Engineer', 'Intern'],
@@ -72,9 +110,7 @@ inquirer.prompt([
             },
         ])
     }
-}).then(
-    inquirer.prompt(questions)
-).then((answers) => {
+}).then((answers) => {
     if (answers.role == 'Manager') {
         return new Manager;
     } else if (answers.role == 'Engineer') {
@@ -84,46 +120,6 @@ inquirer.prompt([
     }
 });
 
-const questions = [
-    {
-        type: 'input',
-        message: "What is your name?",
-        name: 'name',
-        default: 'Mitchell',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("Please enter a valid name");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "What is your email address?",
-        name: 'email',
-        default: 'blank@nowhere.net',
-        validate: function (answer) {
-            if (validator.validate(answer) !== true) {
-                return console.log("A valid GitHub repo is required for a badge.");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "Please select an ID number",
-        name: 'id',
-        default: '1',
-        validate: function (answer) {
-            //validate if number
-            //need to validate if already selected this number
-            if (isNaN(answer)) {
-                return console.log("Please enter a valid ID number");
-            }
-            return true;
-        }
-    },
-];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
