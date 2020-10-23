@@ -1,3 +1,4 @@
+const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -66,7 +67,6 @@ function newEmployee() {
             name: 'id',
             default: '1',
             validate: function (answer) {
-                //validate if number
                 //need to validate if already selected this number
                 if (isNaN(answer)) {
                     return console.log("Please enter a valid ID number");
@@ -118,7 +118,6 @@ function newEmployee() {
             message: "What is your Office Number?",
             name: 'officeNum',
             default: '1',
-            //validate if number
             //need to validate if already selected this number
             validate: function (answer) {
                 if (isNaN(answer)) {
@@ -151,10 +150,32 @@ function renderNewEmployees() {
     if (employees.length === 0) {
         console.log('Please add at least one employee!');
         ask();
+    } else {
+        console.log('Rendering your employee page!')
+        employees.forEach(renderEmployees());
     }
-    console.log('Rendering your employee page!')
-    render(employees);
 };
+
+function renderEmployees(role) {
+    const templateFile = fs.readFileSync(`./templates/${role.getRole().toLowerCase()}.html`, { encoding: 'utf8' });
+    let temp = templateFile.replace('{{ name }}', role.name);
+    temp = temporaryFile.replace('{{ role }}', role.getRole());
+    temp = temporaryFile.replace('{{ id }}', role.id);
+    temp = temporaryFile.replace('{{ email }}', role.email);
+    temp = temporaryFile.replace('{{ email }}', role.email);
+
+
+    if (position.getRole().toLowerCase() === "engineer") {
+        temporaryFile = temporaryFile.replace('{{ github }}', position.github);
+        temporaryFile = temporaryFile.replace('{{ github }}', position.github);
+    } else if (position.getRole().toLowerCase() === "intern") {
+        temporaryFile = temporaryFile.replace('{{ school }}', position.school);
+    } else if (position.getRole().toLowerCase() === "manager") {
+        temporaryFile = temporaryFile.replace('{{ officeNumber }}', position.officeNumber);
+    }
+
+    return temporaryFile;
+}
 
 ask();
 
