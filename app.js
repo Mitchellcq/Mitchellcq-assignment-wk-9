@@ -16,6 +16,24 @@ const validator = require("email-validator");
 
 var employees = [];
 
+function ask() {
+    inquirer.prompt({
+        type: "confirm",
+        name: "addEmployee",
+        message: "Would you like to add a new team member?",
+    }).then(answer => {
+        console.log(answer);
+        if (answer.addEmployee == true) {
+            console.log('creating new employee!');
+            newEmployee();
+        } else {
+            renderNewEmployees();
+        }
+    }).catch(error => {
+        console.log(error);
+    })
+};
+
 function newEmployee() {
     inquirer.prompt([
         {
@@ -117,10 +135,30 @@ function newEmployee() {
                 var newEmployee = new Engineer(answers.name, answers.id, answers.email, answers.github);
             } else {
                 var newEmployee = new Intern(answers.name, answers.id, answers.email, answers.school);
-            }
+            };
+
             employees.push(newEmployee);
+            console.log(employees);
+
+            ask();
+
+        }).catch(error => {
+            console.log(error);
         });
-}
+};
+
+function renderNewEmployees() {
+    if (employees.length === 0) {
+        console.log('Please add at least one employee!');
+        ask();
+    }
+    console.log('Rendering your employee page!')
+    render(employees);
+};
+
+ask();
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
