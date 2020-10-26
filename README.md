@@ -17,6 +17,7 @@
 * [Usage](#usage)
 * [Tests](#tests)
 * [Demonstration](#demonstration)
+* [Future Plans](#futurePlans)
 * [License](#license)
 
 ## Installation
@@ -40,6 +41,14 @@
 ## Demonstration
 
 ![Team Builder App demo](TeamBuilderAppDemo.gif)
+
+## Future Plans
+
+*Plans for future development:*
+
+* Validation to ensure Unique names, emails, ID numbers, etc.
+* User login for managers to easily access their teams.
+* Front end model to streamline user experience.
 
 ## License
 
