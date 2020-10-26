@@ -151,12 +151,21 @@ function renderNewEmployees() {
         console.log('Please add at least one employee!');
         ask();
     } else {
-        console.log('Rendering your employee page!')
+        console.log('Rendering your employee page!');
 
-        render(employees);
-
+        buildHtmlPage();
     }
 };
+
+function buildHtmlPage() {
+    let newFile = render(employees);
+    fs.writeFileSync("./output/teamPage.html", newFile, function (err) {
+        if (err) throw err;
+    })
+
+    console.log("Base page generated!");
+}
+
 
 ask();
 
