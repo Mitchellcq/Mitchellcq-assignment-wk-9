@@ -164,7 +164,7 @@ function buildHtmlPage() {
     })
 
     console.log("Base page generated!");
-}
+};
 
 
 ask();
